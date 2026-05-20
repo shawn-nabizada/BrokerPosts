@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Broker } from "@/types";
+import { Spinner } from "@/components/Spinner";
 import { ProfileModal } from "@/components/setup/ProfileModal";
 import { ComposeScreen } from "@/components/compose/ComposeScreen";
 
@@ -11,7 +12,7 @@ type Status = "loading" | "ready";
  * Authenticated shell. Fetches the broker's profile, forces the setup modal on
  * first run, and otherwise shows the composer. Profile edits reopen the modal.
  */
-export function AppShell({ userId }: { userId: string }) {
+export function AppShell() {
   const [status, setStatus] = useState<Status>("loading");
   const [broker, setBroker] = useState<Broker | null>(null);
   const [editing, setEditing] = useState(false);
@@ -35,7 +36,12 @@ export function AppShell({ userId }: { userId: string }) {
   }, []);
 
   if (status === "loading") {
-    return <div className="bp-loading">Préparation de l&apos;atelier…</div>;
+    return (
+      <div className="bp-loading">
+        <Spinner size={28} />
+        Préparation de l&apos;atelier…
+      </div>
+    );
   }
 
   const needsSetup = !broker || !broker.name;
@@ -46,7 +52,7 @@ export function AppShell({ userId }: { userId: string }) {
   };
 
   if (needsSetup) {
-    return <ProfileModal userId={userId} initial={broker} onSaved={onSaved} mode="first" />;
+    return <ProfileModal initial={broker} onSaved={onSaved} mode="first" />;
   }
 
   return (
@@ -54,7 +60,6 @@ export function AppShell({ userId }: { userId: string }) {
       <ComposeScreen broker={broker} onEditBroker={() => setEditing(true)} />
       {editing ? (
         <ProfileModal
-          userId={userId}
           initial={broker}
           onSaved={onSaved}
           onClose={() => setEditing(false)}

@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { Icon } from "@/components/Icon";
+import { Spinner } from "@/components/Spinner";
 
 export function SignInScreen() {
+  const [connecting, setConnecting] = useState(false);
   return (
     <main
       style={{
@@ -73,7 +76,11 @@ export function SignInScreen() {
         </p>
         <button
           type="button"
-          onClick={() => signIn("google", { callbackUrl: "/" })}
+          disabled={connecting}
+          onClick={() => {
+            setConnecting(true);
+            signIn("google", { callbackUrl: "/" });
+          }}
           style={{
             background: "#fff",
             border: "1px solid var(--line)",
@@ -88,10 +95,11 @@ export function SignInScreen() {
             alignItems: "center",
             gap: 12,
             boxShadow: "0 1px 0 rgba(14,30,71,0.04), 0 8px 24px rgba(14,30,71,0.08)",
+            opacity: connecting ? 0.7 : 1,
           }}
         >
-          <Icon name="google" size={20} />
-          Continuer avec Google
+          {connecting ? <Spinner size={18} /> : <Icon name="google" size={20} />}
+          {connecting ? "Connexion…" : "Continuer avec Google"}
         </button>
       </div>
     </main>

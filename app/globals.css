@@ -57,12 +57,32 @@ main {
 
 .bp-loading {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 18px;
   min-height: 100vh;
   font-family: var(--serif);
   font-style: italic;
   font-size: 22px;
   color: var(--ink);
   letter-spacing: 0.02em;
+}
+
+@keyframes bp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Circular spinner; sized/colored via font-size + currentColor. */
+.bp-spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: bp-spin 0.7s linear infinite;
+  flex-shrink: 0;
 }

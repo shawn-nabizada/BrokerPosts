@@ -1,6 +1,8 @@
 "use client";
 
-import { upload } from "@vercel/blob/client";
+// Client-side image helpers. Images are downscaled in the browser and sent as
+// data URLs in the profile save request; the server uploads them to Vercel Blob.
+// This avoids the fragile client-upload completion-callback handshake.
 
 export function fileToDataURL(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -11,35 +13,66 @@ export function fileToDataURL(file: File): Promise<string> {
   });
 }
 
-const isBlobUrl = (v: string | null) =>
-  !!v && /^https?:\/\//.test(v);
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
 
-async function dataUrlToBlob(dataUrl: string): Promise<Blob> {
-  const res = await fetch(dataUrl);
-  return res.blob();
+const isRemoteUrl = (v: string | null) => !!v && /^https?:\/\//.test(v);
+
+/**
+ * Downscale a data-URL image to fit within `maxDim` and re-encode it to WebP
+ * (with alpha, so logos keep transparency). Falls back to PNG if the browser
+ * can't encode WebP from a canvas (older Safari).
+ */
+async function downscale(
+  dataUrl: string,
+  maxDim: number,
+  quality: number,
+): Promise<string> {
+  const img = await loadImage(dataUrl);
+  let { width, height } = img;
+  if (!width || !height) return dataUrl;
+
+  const scale = Math.min(1, maxDim / Math.max(width, height));
+  width = Math.round(width * scale);
+  height = Math.round(height * scale);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return dataUrl;
+  ctx.drawImage(img, 0, 0, width, height);
+
+  const webp = canvas.toDataURL("image/webp", quality);
+  // Browsers that don't support WebP encoding return a PNG data URL instead.
+  return webp.startsWith("data:image/webp") ? webp : canvas.toDataURL("image/png");
 }
 
 /**
- * Persist a profile image to Vercel Blob and return its public URL.
- *
- * - `null` → returns null (image removed).
- * - already an https URL (unchanged Blob URL) → returned as-is, no re-upload.
- * - a data URL (freshly picked) → uploaded under `users/<userId>/<name>`.
+ * Prepare a profile image for saving:
+ * - `null` → null (removed)
+ * - already a remote Blob URL (unchanged) → returned as-is
+ * - a freshly-picked data URL → downscaled + re-encoded WebP data URL
  */
-export async function persistImage(
-  userId: string,
-  name: "photo" | "logo",
+export async function prepareImage(
   value: string | null,
+  kind: "photo" | "logo",
 ): Promise<string | null> {
   if (!value) return null;
-  if (isBlobUrl(value)) return value;
-
-  const blob = await dataUrlToBlob(value);
-  const ext = blob.type === "image/png" ? "png" : blob.type === "image/webp" ? "webp" : "jpg";
-  const result = await upload(`users/${userId}/${name}.${ext}`, blob, {
-    access: "public",
-    handleUploadUrl: "/api/profile/upload",
-    contentType: blob.type || "image/jpeg",
-  });
-  return result.url;
+  if (isRemoteUrl(value)) return value;
+  try {
+    // Logo: smaller max, higher quality to keep edges/text crisp.
+    return kind === "logo"
+      ? await downscale(value, 600, 0.92)
+      : await downscale(value, 720, 0.82);
+  } catch {
+    // If canvas processing fails for any reason, fall back to the original.
+    return value;
+  }
 }

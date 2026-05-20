@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { readProfile, writeProfile } from "@/lib/blob";
+import { readProfile, writeProfile, resolveProfileImage } from "@/lib/blob";
 import { EMPTY_BROKER, type Broker } from "@/types";
 
 export const runtime = "nodejs";
@@ -29,10 +29,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  const broker: Broker = { ...EMPTY_BROKER, ...body };
+  const incoming: Broker = { ...EMPTY_BROKER, ...body };
 
   // Boundary validation — required fields.
-  if (!broker.name?.trim() || !broker.email?.trim() || !broker.phone?.trim()) {
+  if (!incoming.name?.trim() || !incoming.email?.trim() || !incoming.phone?.trim()) {
     return NextResponse.json(
       { error: "name, email and phone are required" },
       { status: 422 },
@@ -40,11 +40,16 @@ export async function POST(req: Request) {
   }
 
   try {
+    // Upload any freshly-picked images (data URLs) to Blob; keep existing URLs.
+    const [photo, logo] = await Promise.all([
+      resolveProfileImage(session.user.id, "photo", incoming.photo),
+      resolveProfileImage(session.user.id, "logo", incoming.logo),
+    ]);
+    const broker: Broker = { ...incoming, photo, logo };
     await writeProfile(session.user.id, broker);
+    return NextResponse.json({ profile: broker });
   } catch (e) {
     console.error("Profile save failed", e);
     return NextResponse.json({ error: "save_failed" }, { status: 500 });
   }
-
-  return NextResponse.json({ profile: broker });
 }

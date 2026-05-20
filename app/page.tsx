@@ -9,5 +9,5 @@ export default async function Home() {
     return <SignInScreen />;
   }
 
-  return <AppShell userId={session.user.id} />;
+  return <AppShell />;
 }

@@ -4,18 +4,17 @@ import { useState } from "react";
 import type { Broker } from "@/types";
 import { EMPTY_BROKER } from "@/types";
 import { Icon } from "@/components/Icon";
-import { persistImage } from "@/lib/images";
+import { Spinner } from "@/components/Spinner";
+import { prepareImage } from "@/lib/images";
 import { Field, TextInput } from "./fields";
 import { PhotoCropPicker, ImagePicker } from "./pickers";
 
 export function ProfileModal({
-  userId,
   initial,
   onSaved,
   onClose,
   mode = "first",
 }: {
-  userId: string;
   initial: Broker | null;
   onSaved: (b: Broker) => void;
   onClose?: () => void;
@@ -36,11 +35,16 @@ export function ProfileModal({
     if (!canSave || saving) return;
     setSaving(true);
     setError(null);
+
+    // Guard against a request that never settles so the button can't hang.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
     try {
-      // Upload any freshly-picked images to Blob, keep existing URLs as-is.
+      // Downscale/encode freshly-picked images in the browser; the server
+      // uploads them to Blob. Existing remote URLs pass through unchanged.
       const [photo, logo] = await Promise.all([
-        persistImage(userId, "photo", b.photo),
-        persistImage(userId, "logo", b.logo),
+        prepareImage(b.photo, "photo"),
+        prepareImage(b.logo, "logo"),
       ]);
       const next: Broker = { ...b, photo, logo };
 
@@ -48,6 +52,7 @@ export function ProfileModal({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(next),
+        signal: controller.signal,
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
@@ -56,11 +61,15 @@ export function ProfileModal({
       const { profile } = (await res.json()) as { profile: Broker };
       onSaved(profile);
     } catch (e) {
+      const aborted = e instanceof DOMException && e.name === "AbortError";
       setError(
-        "L'enregistrement a échoué. Vérifiez votre connexion et réessayez.",
+        aborted
+          ? "L'enregistrement a expiré. Vérifiez votre connexion et réessayez."
+          : "L'enregistrement a échoué. Vérifiez votre connexion et réessayez.",
       );
       console.error("Profile save failed", e);
     } finally {
+      clearTimeout(timeout);
       setSaving(false);
     }
   };
@@ -140,13 +149,27 @@ export function ProfileModal({
               marginBottom: 28,
             }}
           >
-            <PhotoCropPicker
-              photo={b.photo}
-              crop={b.photoCrop}
-              onChangePhoto={set("photo")}
-              onChangeCrop={set("photoCrop")}
-              size={180}
-            />
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <PhotoCropPicker
+                photo={b.photo}
+                crop={b.photoCrop}
+                onChangePhoto={set("photo")}
+                onChangeCrop={set("photoCrop")}
+                size={180}
+              />
+              <div
+                style={{
+                  fontFamily: "var(--sans)",
+                  fontSize: 12,
+                  color: "var(--muted)",
+                  fontStyle: "italic",
+                  lineHeight: 1.5,
+                }}
+              >
+                Conseil : glissez votre photo pour la cadrer et utilisez le
+                curseur (ou la molette) pour zoomer.
+              </div>
+            </div>
             <div
               style={{
                 display: "grid",
@@ -184,19 +207,6 @@ export function ProfileModal({
                   type="email"
                 />
               </Field>
-              <div
-                style={{
-                  fontFamily: "var(--sans)",
-                  fontSize: 12,
-                  color: "var(--muted)",
-                  fontStyle: "italic",
-                  lineHeight: 1.5,
-                  padding: "4px 0",
-                }}
-              >
-                Astuce : glissez votre photo pour la cadrer et utilisez le curseur
-                (ou la molette) pour zoomer.
-              </div>
             </div>
           </div>
 
@@ -294,6 +304,7 @@ export function ProfileModal({
                 opacity: saving ? 0.7 : 1,
               }}
             >
+              {saving ? <Spinner size={15} /> : null}
               {saving
                 ? "Enregistrement…"
                 : mode === "first"
