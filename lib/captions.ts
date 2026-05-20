@@ -13,7 +13,7 @@ const CAPTION_BANK: Record<Kind, Record<"warm" | "celebratory", CaptionEntry[]>>
     warm: [
       {
         h: "VENDU.",
-        b: "Un immense merci à mes clients pour leur confiance tout au long de cette aventure. Une nouvelle page se tourne — bonne route vers le prochain chapitre. 🤍",
+        b: "Un immense merci à mes clients pour leur confiance tout au long de cette aventure. Une nouvelle page se tourne. Bonne route vers le prochain chapitre. ✨",
       },
       {
         h: "Mission accomplie.",
@@ -31,11 +31,11 @@ const CAPTION_BANK: Record<Kind, Record<"warm" | "celebratory", CaptionEntry[]>>
       },
       {
         h: "Encore un VENDU !",
-        b: "Bravo à mes clients — votre propriété a trouvé ses nouveaux propriétaires. À vous le prochain rêve qui commence ! ✨",
+        b: "Bravo à mes clients, votre propriété a trouvé ses nouveaux propriétaires. À vous le prochain rêve qui commence ! ✨",
       },
       {
         h: "Vendue. Et avec quel plaisir.",
-        b: "Félicitations à mes clients pour cette belle vente. Merci de m'avoir fait confiance à chaque étape — c'est ce qui rend ce métier si beau. 🏡",
+        b: "Félicitations à mes clients pour cette belle vente. Merci de m'avoir fait confiance à chaque étape. C'est ce qui rend ce métier si beau. 🏡",
       },
     ],
   },
@@ -43,11 +43,11 @@ const CAPTION_BANK: Record<Kind, Record<"warm" | "celebratory", CaptionEntry[]>>
     warm: [
       {
         h: "ACHETÉ.",
-        b: "Merci à mes clients pour leur confiance dans la recherche de leur nouveau chez-soi. Bienvenue à la maison — que cette demeure vous apporte bonheur et souvenirs. 🤍",
+        b: "Merci à mes clients pour leur confiance dans la recherche de leur nouveau chez-soi. Bienvenue à la maison. Que cette demeure vous apporte bonheur et souvenirs. 🏡",
       },
       {
         h: "Bienvenue à la maison.",
-        b: "Quel bonheur de vous avoir accompagnés vers cette nouvelle adresse. Merci pour votre confiance — il ne vous reste plus qu'à profiter.",
+        b: "Quel bonheur de vous avoir accompagnés vers cette nouvelle adresse. Merci pour votre confiance, il ne vous reste plus qu'à profiter.",
       },
       {
         h: "Les clés sont à vous.",
@@ -61,7 +61,7 @@ const CAPTION_BANK: Record<Kind, Record<"warm" | "celebratory", CaptionEntry[]>>
       },
       {
         h: "Un nouveau chez-soi !",
-        b: "Bravo à mes clients — c'est officiel, vous êtes propriétaires ! Merci pour votre confiance, et bienvenue dans cette nouvelle aventure.",
+        b: "Bravo à mes clients, c'est officiel : vous êtes propriétaires ! Merci pour votre confiance, et bienvenue dans cette nouvelle aventure.",
       },
       {
         h: "Achetée. Adorée. À vous.",
@@ -121,7 +121,7 @@ export function generateCaption({
     pick.b,
     "",
     sig.join(" · "),
-    contact.join("  ·  "),
+    ...contact, // phone and email each on their own line
     "",
     hashtags,
   ].join("\n");

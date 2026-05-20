@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import type { Broker, Kind, LayoutId, StyleId } from "@/types";
 import { Template } from "@/components/templates/Template";
 import {
@@ -28,6 +29,24 @@ function TemplateCard({
   active: boolean;
   onClick: () => void;
 }) {
+  // The thumbnail fills its (responsive) grid column; the 1080px canvas is
+  // scaled to whatever width the column gets, measured live.
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    const el = thumbRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      setWidth(entries[0].contentRect.width);
+    });
+    ro.observe(el);
+    setWidth(el.clientWidth);
+    return () => ro.disconnect();
+  }, []);
+
+  const scale = width ? width / 1080 : 0.32;
+
   return (
     <button
       type="button"
@@ -44,9 +63,10 @@ function TemplateCard({
       }}
     >
       <div
+        ref={thumbRef}
         style={{
-          width: 1080 * 0.2,
-          height: 1080 * 0.2,
+          width: "100%",
+          aspectRatio: "1 / 1",
           position: "relative",
           overflow: "hidden",
           borderRadius: 4,
@@ -58,9 +78,12 @@ function TemplateCard({
       >
         <div
           style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
             width: 1080,
             height: 1080,
-            transform: "scale(0.2)",
+            transform: `scale(${scale})`,
             transformOrigin: "top left",
             pointerEvents: "none",
           }}
@@ -155,7 +178,7 @@ export function TemplateGallery({
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, max-content)",
+              gridTemplateColumns: "repeat(3, 1fr)",
               gap: 24,
             }}
           >

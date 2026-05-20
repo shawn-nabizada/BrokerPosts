@@ -207,8 +207,8 @@ function ComposeHeader({
             onClick={() => signOut()}
             title="Se déconnecter"
             style={{
-              background: "transparent",
-              border: "1px solid var(--line-soft)",
+              background: "#fff",
+              border: "1px solid var(--line)",
               borderRadius: 999,
               padding: "8px 14px",
               cursor: "pointer",
@@ -267,6 +267,7 @@ export function ComposeScreen({
             Nouvelle publication
           </div>
           <h1
+            className="compose-title"
             style={{
               fontFamily: "var(--serif)",
               fontSize: 52,
@@ -275,11 +276,14 @@ export function ComposeScreen({
               color: "var(--ink)",
               letterSpacing: "-0.02em",
               lineHeight: 1.05,
-              maxWidth: 760,
+              maxWidth: "none",
+              textWrap: "balance",
             }}
           >
             Créez une publication{" "}
-            <em style={{ color: "var(--accent)" }}>prête à publier.</em>
+            <em style={{ color: "var(--accent)", whiteSpace: "nowrap" }}>
+              prête à publier.
+            </em>
           </h1>
         </div>
 

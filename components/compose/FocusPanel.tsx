@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as htmlToImage from "html-to-image";
 import type { Broker, Kind, LayoutId, StyleId } from "@/types";
 import { Icon } from "@/components/Icon";
@@ -30,6 +30,14 @@ export function FocusPanel({
   const [captionCopied, setCaptionCopied] = useState(false);
 
   const caption = generateCaption({ kind, styleId, broker });
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   const onDownload = async () => {
     if (!captureRef.current) return;

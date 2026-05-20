@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Broker } from "@/types";
 import { EMPTY_BROKER } from "@/types";
 import { Icon } from "@/components/Icon";
@@ -23,6 +23,16 @@ export function ProfileModal({
   const [b, setB] = useState<Broker>(initial || EMPTY_BROKER);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Close on Escape — only when closing is allowed (edit mode, not first-run).
+  useEffect(() => {
+    if (!onClose) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   const set =
     <K extends keyof Broker>(k: K) =>

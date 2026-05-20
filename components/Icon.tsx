@@ -18,7 +18,6 @@ export type IconName =
   | "plus"
   | "sparkle"
   | "key"
-  | "logo"
   | "google";
 
 interface IconProps {
@@ -139,13 +138,6 @@ export function Icon({ name, size = 18, stroke = 1.6, style }: IconProps) {
         <svg {...props}>
           <circle cx="8" cy="14" r="4" />
           <path d="M11 11l9-9M16 6l3 3" />
-        </svg>
-      );
-    case "logo":
-      return (
-        <svg {...props}>
-          <rect x="4" y="4" width="16" height="16" rx="2" />
-          <path d="M4 14l5-5 5 5 6-6" />
         </svg>
       );
     case "google":
