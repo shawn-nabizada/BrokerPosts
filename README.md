@@ -1,4 +1,4 @@
-# BrokerPosts
+# Publimo
 
 Generate Instagram/Facebook-ready French real-estate posts (**Vendu** / **Acheté**)
 from 3–5 property photos. Each broker signs in with Google, sets up their profile

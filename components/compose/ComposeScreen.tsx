@@ -105,7 +105,16 @@ function ComposeHeader({
               justifyContent: "center",
             }}
           >
-            <Icon name="logo" size={18} stroke={2} />
+            <span
+              style={{
+                fontFamily: "var(--serif)",
+                fontWeight: 700,
+                fontSize: 20,
+                lineHeight: 1,
+              }}
+            >
+              P
+            </span>
           </div>
           <div>
             <div
@@ -117,7 +126,7 @@ function ComposeHeader({
                 letterSpacing: "-0.01em",
               }}
             >
-              BrokerPosts
+              Publimo
             </div>
             <div
               style={{

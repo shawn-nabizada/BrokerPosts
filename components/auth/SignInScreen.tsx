@@ -32,7 +32,16 @@ export function SignInScreen() {
             marginBottom: 24,
           }}
         >
-          <Icon name="logo" size={26} stroke={2} />
+          <span
+            style={{
+              fontFamily: "var(--serif)",
+              fontWeight: 700,
+              fontSize: 28,
+              lineHeight: 1,
+            }}
+          >
+            P
+          </span>
         </div>
         <div
           style={{
@@ -45,7 +54,7 @@ export function SignInScreen() {
             marginBottom: 16,
           }}
         >
-          BrokerPosts · Atelier de publications
+          Publimo · Atelier de publications
         </div>
         <h1
           style={{

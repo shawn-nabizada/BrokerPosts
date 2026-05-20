@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BrokerPosts — Social Post Generator",
+  title: "Publimo — Générateur de publications immobilières",
   description:
-    "Generate Instagram/Facebook-ready French real-estate posts (Vendu / Acheté).",
+    "Créez des publications immobilières prêtes à publier sur Instagram et Facebook (Vendu / Acheté).",
 };
 
 export default function RootLayout({

@@ -296,7 +296,7 @@ export function ModerneTemplate({
               display: "inline-block",
             }}
           />
-          {kind === "vendu" ? "Fermé · Sold" : "Ouvert · Bought"}
+          {kind === "vendu" ? "Transaction conclue" : "Nouvelle acquisition"}
         </span>
       </div>
 
@@ -394,7 +394,7 @@ export function ModerneTemplate({
           }}
         >
           <div style={{ fontWeight: 600 }}>{broker?.phone || "514·555·0000"}</div>
-          <div style={{ opacity: 0.7 }}>{broker?.email || "name@brokerage.qc"}</div>
+          <div style={{ opacity: 0.7 }}>{broker?.email || "courtier@agence.qc"}</div>
         </div>
       </footer>
     </div>

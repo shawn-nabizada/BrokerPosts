@@ -74,12 +74,12 @@ const CAPTION_BANK: Record<Kind, Record<"warm" | "celebratory", CaptionEntry[]>>
 const HASHTAG_SETS: Record<Kind, string[]> = {
   vendu: [
     "#vendu #immobilier #courtierimmobilier #merci #nouvellepage #immobilierqc #realestate",
-    "#vendu #sold #courtierimmobilier #immobilierquebec #missionaccomplie #merci",
+    "#vendu #maisonvendue #courtierimmobilier #immobilierquebec #missionaccomplie #merci",
     "#vendu #immobilier #realestatequebec #courtier #merciclients #propriete",
   ],
   achete: [
     "#acheté #nouveauchezsoi #immobilier #courtierimmobilier #lesclésenmain #immobilierqc",
-    "#acheté #bought #propriétaires #courtierimmobilier #immobilierquebec #félicitations",
+    "#acheté #nouvelleadresse #propriétaires #courtierimmobilier #immobilierquebec #félicitations",
     "#acheté #nouvellemaison #immobilier #realestate #courtier #merciclients",
   ],
 };

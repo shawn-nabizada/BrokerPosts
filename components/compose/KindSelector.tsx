@@ -4,8 +4,8 @@ import type { Kind } from "@/types";
 import { Icon, type IconName } from "@/components/Icon";
 
 const OPTS: { id: Kind; label: string; sub: string; icon: IconName }[] = [
-  { id: "vendu", label: "VENDU", sub: "Sold", icon: "key" },
-  { id: "achete", label: "ACHETÉ", sub: "Bought", icon: "sparkle" },
+  { id: "vendu", label: "VENDU", sub: "Propriété vendue", icon: "key" },
+  { id: "achete", label: "ACHETÉ", sub: "Propriété achetée", icon: "sparkle" },
 ];
 
 export function KindSelector({

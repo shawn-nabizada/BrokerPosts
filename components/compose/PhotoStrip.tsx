@@ -189,7 +189,7 @@ export function PhotoStrip({
                         justifyContent: "center",
                         cursor: "pointer",
                       }}
-                      aria-label="Remove photo"
+                      aria-label="Retirer la photo"
                     >
                       <Icon name="x" size={12} stroke={2.5} />
                     </button>

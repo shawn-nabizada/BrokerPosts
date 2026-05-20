@@ -349,7 +349,7 @@ export function ImagePicker({
                 alignItems: "center",
                 justifyContent: "center",
               }}
-              aria-label="Remove image"
+              aria-label="Retirer l'image"
             >
               <Icon name="x" size={14} stroke={2} />
             </button>

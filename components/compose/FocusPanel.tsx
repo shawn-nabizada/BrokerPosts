@@ -47,7 +47,7 @@ export function FocusPanel({
       const tag = `${kind}_${STYLE_META[styleId].label}_${LAYOUT_META[layoutId].label}`
         .toLowerCase()
         .replace(/[^a-z0-9_-]/g, "");
-      link.download = `brokerpost_${tag}.png`;
+      link.download = `publimo_${tag}.png`;
       link.href = dataUrl;
       link.click();
     } catch (e) {
@@ -191,7 +191,7 @@ export function FocusPanel({
                 cursor: "pointer",
                 color: "var(--ink)",
               }}
-              aria-label="Close"
+              aria-label="Fermer"
             >
               <Icon name="x" size={16} stroke={2} />
             </button>

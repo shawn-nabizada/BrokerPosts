@@ -1,4 +1,4 @@
-# BrokerPosts — Design
+# Publimo — Design
 
 _Date: 2026-05-20_
 
