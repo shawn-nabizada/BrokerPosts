@@ -31,8 +31,8 @@ function ClassiqueStamp({
         position: "absolute",
         right: 28,
         bottom: 28,
-        width: 200,
-        height: 200,
+        width: 160,
+        height: 160,
         borderRadius: "50%",
         background: stampColor,
         color: paperColor,
@@ -67,7 +67,7 @@ function ClassiqueStamp({
       </div>
       <div
         style={{
-          fontSize: 46,
+          fontSize: 34,
           fontWeight: 700,
           letterSpacing: "0.04em",
           marginTop: 2,
@@ -187,14 +187,14 @@ export function ClassiqueTemplate({
         <BrokerAvatar
           src={broker?.photo}
           crop={broker?.photoCrop}
-          size={84}
+          size={132}
           border={trim}
         />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
               fontFamily: "var(--serif)",
-              fontSize: 28,
+              fontSize: 44,
               fontWeight: 600,
               lineHeight: 1,
               color: ink,
@@ -204,9 +204,9 @@ export function ClassiqueTemplate({
           </div>
           <div
             style={{
-              marginTop: 6,
+              marginTop: 8,
               fontFamily: "var(--sans)",
-              fontSize: 13,
+              fontSize: 15,
               textTransform: "uppercase",
               letterSpacing: "0.22em",
               color: ink,
@@ -220,7 +220,7 @@ export function ClassiqueTemplate({
           style={{
             textAlign: "right",
             fontFamily: "var(--sans)",
-            fontSize: 14,
+            fontSize: 17,
             lineHeight: 1.5,
             color: ink,
           }}
@@ -314,7 +314,7 @@ export function ModerneTemplate({
           style={{
             fontFamily: "var(--sans)",
             fontWeight: 900,
-            fontSize: 132,
+            fontSize: 96,
             letterSpacing: "-0.04em",
             color: ink,
             lineHeight: 0.85,
@@ -355,14 +355,14 @@ export function ModerneTemplate({
         <BrokerAvatar
           src={broker?.photo}
           crop={broker?.photoCrop}
-          size={68}
+          size={116}
           border={ink}
         />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
               fontFamily: "var(--sans)",
-              fontSize: 22,
+              fontSize: 36,
               fontWeight: 800,
               lineHeight: 1,
               color: ink,
@@ -373,9 +373,9 @@ export function ModerneTemplate({
           </div>
           <div
             style={{
-              marginTop: 4,
+              marginTop: 6,
               fontFamily: "var(--mono)",
-              fontSize: 11,
+              fontSize: 13,
               textTransform: "uppercase",
               letterSpacing: "0.18em",
               opacity: 0.6,
@@ -388,7 +388,7 @@ export function ModerneTemplate({
           style={{
             textAlign: "right",
             fontFamily: "var(--mono)",
-            fontSize: 13,
+            fontSize: 16,
             lineHeight: 1.5,
             color: ink,
           }}
@@ -514,7 +514,7 @@ export function EditorialTemplate({
           <div
             style={{
               fontFamily: '"DM Serif Display", "Playfair Display", serif',
-              fontSize: 132,
+              fontSize: 96,
               lineHeight: 0.9,
               letterSpacing: "-0.04em",
               color: paper,
@@ -546,7 +546,7 @@ export function EditorialTemplate({
           <BrokerAvatar
             src={broker?.photo}
             crop={broker?.photoCrop}
-            size={88}
+            size={124}
             border={accent}
           />
           <div style={{ minWidth: 0, flex: 1 }}>
@@ -565,7 +565,7 @@ export function EditorialTemplate({
             <div
               style={{
                 fontFamily: "var(--serif)",
-                fontSize: 26,
+                fontSize: 38,
                 fontWeight: 600,
                 lineHeight: 1.05,
                 color: paper,
@@ -577,7 +577,7 @@ export function EditorialTemplate({
               style={{
                 marginTop: 8,
                 fontFamily: "var(--sans)",
-                fontSize: 13,
+                fontSize: 16,
                 lineHeight: 1.55,
                 color: paper,
                 opacity: 0.9,
