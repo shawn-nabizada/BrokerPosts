@@ -38,10 +38,7 @@ npx auth secret        # prints/writes a value → put it in .env.local as AUTH_
 
 1. [Google Cloud Console](https://console.cloud.google.com/) → create a project.
 2. **APIs & Services → OAuth consent screen**: choose **External**, add an app name
-   and your support email. Save.
-   - To let anyone sign in (open sign-up), click **Publish app**. For the basic
-     `email`/`profile` scopes this is instant — **no Google review required**.
-     (In "Testing" mode only emails you add as test users can sign in.)
+   and your support email. Save. The app starts in **Testing** mode.
 3. **APIs & Services → Credentials → Create credentials → OAuth client ID**:
    - Application type: **Web application**.
    - **Authorized redirect URIs** → add the local one for now:
@@ -49,6 +46,29 @@ npx auth secret        # prints/writes a value → put it in .env.local as AUTH_
      (you'll add the production URL in step 6, once you know it).
 4. Copy **Client ID** → `AUTH_GOOGLE_ID` and **Client secret** → `AUTH_GOOGLE_SECRET`
    in `.env.local`.
+
+#### While in Testing mode — allow specific sign-ins
+
+In Testing mode, **only explicitly-added accounts can sign in** (everyone else gets
+"access blocked / app not verified"). Add yourself and any colleagues:
+
+- **APIs & Services → OAuth consent screen → Audience** (older UI: the **Test users**
+  section of the consent screen) → **Add users** → enter their Google email addresses
+  → Save. Up to 100 test users; no review required.
+
+This is the fastest way to demo the app with a handful of people before going public.
+
+#### Going to Production — let anyone sign in
+
+When you're ready for open sign-up (your chosen setting), publish the app:
+
+- **APIs & Services → OAuth consent screen → Audience** → **Publishing status:
+  Testing → Publish app** → confirm.
+- Because this app only requests the **non-sensitive** `email` / `profile` / `openid`
+  scopes, publishing takes effect **immediately and requires no Google verification
+  or review** — there's no form to submit and no waiting period. (Verification is only
+  required for sensitive/restricted scopes, which this app does not use.)
+- Once published, the test-user list no longer applies and any Google account can sign in.
 
 ### 4. Create the Vercel project + Blob store (needed for the Blob token)
 
