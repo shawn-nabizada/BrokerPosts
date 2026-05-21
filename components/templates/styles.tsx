@@ -170,6 +170,7 @@ export function ClassiqueTemplate({
           lineHeight: 1.15,
           color: ink,
           marginTop: 4,
+          paddingLeft: 300,
         }}
       >
         Merci à mes clients pour leur confiance.
@@ -177,19 +178,25 @@ export function ClassiqueTemplate({
 
       <footer
         style={{
+          position: "relative",
           display: "flex",
           alignItems: "center",
           gap: 22,
           paddingTop: 18,
+          paddingLeft: 334,
           borderTop: `1px solid ${ink}33`,
         }}
       >
-        <BrokerAvatar
-          src={broker?.photo}
-          crop={broker?.photoCrop}
-          size={132}
-          border={trim}
-        />
+        <div style={{ position: "absolute", left: 0, top: -224, zIndex: 3 }}>
+          <BrokerAvatar
+            src={broker?.photo}
+            crop={broker?.photoCrop}
+            size={298}
+            border={paper}
+            ringWidth={6}
+            floating
+          />
+        </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
@@ -345,19 +352,25 @@ export function ModerneTemplate({
 
       <footer
         style={{
+          position: "relative",
           display: "flex",
           alignItems: "center",
           gap: 18,
           paddingTop: 14,
+          paddingLeft: 334,
           borderTop: `2px solid ${ink}`,
         }}
       >
-        <BrokerAvatar
-          src={broker?.photo}
-          crop={broker?.photoCrop}
-          size={116}
-          border={ink}
-        />
+        <div style={{ position: "absolute", left: 0, top: -210, zIndex: 3 }}>
+          <BrokerAvatar
+            src={broker?.photo}
+            crop={broker?.photoCrop}
+            size={298}
+            border={paper}
+            ringWidth={6}
+            floating
+          />
+        </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
@@ -542,22 +555,60 @@ export function EditorialTemplate({
 
         <div style={{ width: 1, alignSelf: "stretch", background: `${paper}33` }} />
 
-        <div style={{ display: "flex", alignItems: "center", gap: 18, minWidth: 0 }}>
-          <BrokerAvatar
-            src={broker?.photo}
-            crop={broker?.photoCrop}
-            size={124}
-            border={accent}
-          />
-          <div style={{ minWidth: 0, flex: 1 }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "298px 1fr",
+            gap: 22,
+            alignItems: "center",
+            minWidth: 0,
+          }}
+        >
+          {/* Photo column — medallion floats up into the photos; contact sits beneath it */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 16,
+              marginTop: -210,
+              zIndex: 5,
+            }}
+          >
+            <BrokerAvatar
+              src={broker?.photo}
+              crop={broker?.photoCrop}
+              size={298}
+              border={paper}
+              ringWidth={6}
+              floating
+            />
             <div
               style={{
                 fontFamily: "var(--sans)",
-                fontSize: 10,
+                fontSize: 15,
+                lineHeight: 1.55,
+                color: paper,
+                opacity: 0.92,
+                textAlign: "center",
+                width: "100%",
+              }}
+            >
+              <div style={{ fontWeight: 600 }}>{broker?.phone || "514 555-0000"}</div>
+              <div style={{ opacity: 0.85 }}>{broker?.email || "courtier@maison.qc"}</div>
+            </div>
+          </div>
+
+          {/* Name column */}
+          <div style={{ minWidth: 0 }}>
+            <div
+              style={{
+                fontFamily: "var(--sans)",
+                fontSize: 11,
                 letterSpacing: "0.28em",
                 textTransform: "uppercase",
                 color: accent,
-                marginBottom: 4,
+                marginBottom: 6,
               }}
             >
               Votre courtier
@@ -565,26 +616,13 @@ export function EditorialTemplate({
             <div
               style={{
                 fontFamily: "var(--serif)",
-                fontSize: 38,
+                fontSize: 40,
                 fontWeight: 600,
                 lineHeight: 1.05,
                 color: paper,
               }}
             >
               {broker?.name || "Prénom Nom"}
-            </div>
-            <div
-              style={{
-                marginTop: 8,
-                fontFamily: "var(--sans)",
-                fontSize: 16,
-                lineHeight: 1.55,
-                color: paper,
-                opacity: 0.9,
-              }}
-            >
-              <div style={{ fontWeight: 600 }}>{broker?.phone || "514 555-0000"}</div>
-              <div style={{ opacity: 0.8 }}>{broker?.email || "courtier@maison.qc"}</div>
             </div>
           </div>
         </div>

@@ -8,11 +8,15 @@ export function BrokerAvatar({
   crop,
   size = 88,
   border = "rgba(255,255,255,0.4)",
+  ringWidth = 2,
+  floating = false,
 }: {
   src: string | null | undefined;
   crop: PhotoCrop | null | undefined;
   size?: number;
   border?: string;
+  ringWidth?: number;
+  floating?: boolean;
 }) {
   const c = crop || { x: 0, y: 0, zoom: 1 };
   return (
@@ -24,8 +28,10 @@ export function BrokerAvatar({
         overflow: "hidden",
         flexShrink: 0,
         background: "#C9D6E5",
-        border: `2px solid ${border}`,
-        boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
+        border: `${ringWidth}px solid ${border}`,
+        boxShadow: floating
+          ? "0 14px 36px rgba(14,30,71,0.40)"
+          : "0 1px 3px rgba(0,0,0,0.15)",
         position: "relative",
       }}
     >
